@@ -56,9 +56,34 @@ void Player::catchCreature(Creature* c)
 
 void Player::battle()
 {
+    bool continueBattle = true;
+    int decision;
     cout<<"An enemy creature has appeared!"<<endl;
+    
     Creature* opp = new Creature();
-    catchCreature(opp);
+    opp->setHP(50);
+    opp->setName("Enemy");
+    
+    while(continueBattle==true)
+    {
+        cout<<"(0)Attack or (1)Capture?"<<endl;
+        cin>>decision;
+        if(decision==0)
+        {
+            activeCreature->Attack(opp);
+            cout<<opp;
+            if(opp->getCurHP() <= 0)
+            {
+                continueBattle = false;
+                delete opp;   
+            }
+        }
+        else if(decision==1)
+        {
+            catchCreature(opp);
+            continueBattle = false;
+        }
+    }
 }
 
 Player::~Player()
