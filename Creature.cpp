@@ -9,14 +9,24 @@ using std::ostream;
 Creature::Creature()
 {
     cout<<"Creature spawned"<<endl;
-    attackBuff = 0;
+    name = "Basic Creature";
+    maxHP = 50;
+    currentHP = 50;
+    baseDamage = 10;
+    attackBuff = 15;
     defenseBuff = 0;
+    captureRate = 0;
+}
+
+void Creature::takeDamage(int x)
+{
+    currentHP -= x;
 }
 
 void Creature::Attack(Creature* c)
 {
     cout<<"Attacking!"<<endl;
-    c->takeDamage(25);
+    c->takeDamage(baseDamage);
 }
 
 Creature::~Creature()

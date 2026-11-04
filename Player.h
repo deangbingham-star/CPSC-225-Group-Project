@@ -14,7 +14,7 @@ public:
 	void addCreature();
 	void addCreature(Creature* c);
 	void removeCreature();
-	//void setActiveCreature();
+	void setActiveCreature();
 	void battle();
 	void catchCreature(Creature* c);
 };

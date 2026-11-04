@@ -14,7 +14,7 @@ int main()
 	cout<<"pre-battle"<<endl;
 	p.battle();
 	cout<<"post battle"<<endl;
-    
+    p.battle();
     
     
 	return 0;
