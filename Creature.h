@@ -26,12 +26,13 @@ public:
 		maxHP = x;
 		currentHP = x;
 	}
+	
 	void takeDamage(int x);
+	void applyAttackBuff(int x);
+	void applyDefenseBuff(int x);
+	
 	void setName(string s) { name = s; }
-	string getName()
-	{
-		return name;
-	}
+	string getName() {return name; }
 
 	friend ostream& operator<<(ostream& os, Creature* c);
 };

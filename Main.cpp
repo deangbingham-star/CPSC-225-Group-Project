@@ -11,11 +11,8 @@ int main()
 	cout<<"Welcome!"<<endl;
 
 	Player p("Karl");
-	cout<<"pre-battle"<<endl;
+	p.shop();
 	p.battle();
-	cout<<"post battle"<<endl;
-    p.battle();
-    
     
 	return 0;
 }

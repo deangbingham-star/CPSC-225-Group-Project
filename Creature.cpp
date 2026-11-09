@@ -13,14 +13,29 @@ Creature::Creature()
     maxHP = 50;
     currentHP = 50;
     baseDamage = 10;
-    attackBuff = 15;
+    attackBuff = 0;
     defenseBuff = 0;
     captureRate = 0;
 }
 
 void Creature::takeDamage(int x)
 {
-    currentHP -= x;
+    if(defenseBuff>0)
+        currentHP -= (x/defenseBuff);
+    else if(defenseBuff<0)
+        currentHP -= (x-(defenseBuff*5));
+    else
+        currentHP -= x;
+}
+
+void Creature::applyAttackBuff(int x)
+{
+    attackBuff += x;
+}
+
+void Creature::applyDefenseBuff(int x)
+{
+    defenseBuff += x;
 }
 
 void Creature::Attack(Creature* c)
@@ -38,6 +53,8 @@ ostream& operator<<(ostream& os, Creature* c)
 {
     os<<c->name<<endl;
     os<<"Current HP = "<<c->currentHP<<endl;
+    os<<"Attack buff status: "<<c->attackBuff<<endl;
+    os<<"Defense buff status: "<<c->attackBuff<<endl;
     
     return os;
 }
