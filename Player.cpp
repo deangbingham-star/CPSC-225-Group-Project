@@ -73,7 +73,7 @@ void Player::setActiveCreature(int n)
 	//cin >> inp;
 	inp = getChoice();
 	
-	if (inp > numCreatures || inp == n)
+	if (inp > numCreatures || inp == n || inp < 1)
 		throw inp;
 
 	activeCreature = creatures[inp - 1];
