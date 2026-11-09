@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Creature.h"
 #include "Player.h"
+#include "CustomUtilities.h"
 using std::string;
 using std::cout;
 using std::cin;
@@ -49,7 +50,9 @@ void Player::setActiveCreature()
 	{
 		cout<<x+1<<": "<<creatures[x]->getName()<<endl;
 	}
-	cin >> inp;
+	//cin >> inp;
+	inp = getChoice();
+	
 	if (inp > numCreatures)
 		throw inp;
 
@@ -67,7 +70,9 @@ void Player::setActiveCreature(int n)
 			cout<<x+1<<": "<<creatures[x]->getName()<<endl;
 	}
 
-	cin >> inp;
+	//cin >> inp;
+	inp = getChoice();
+	
 	if (inp > numCreatures || inp == n)
 		throw inp;
 
@@ -87,7 +92,8 @@ void Player::removeCreature()
 	{
 		cout<<x+1<<": "<<creatures[x]->getName()<<endl;
 	}
-	cin>>inp;
+	//cin>>inp;
+    inp=getChoice();
 
 	if(creatures[inp-1]==activeCreature)
 	{
@@ -132,7 +138,8 @@ void Player::catchCreature(Creature* c)
 		     << "Would you like to remove a creature to make room?" << endl
 		     <<"(1) Yes\n(2) No"<<endl;
 
-		cin>>decision;
+		decision = getChoice(1,2);
+		//cin>>decision;
 
 		if(decision==1)
 		{
@@ -211,9 +218,11 @@ void Player::battle()
 		bool turnEnd = false;
 		while(turnEnd == false)
 		{
-			cout << "(0)Attack, (1)Capture, (2)Switch Active Creature, (3)Use Item" << endl;
-			cin >> decision;
-			if (decision == 0)
+			cout << "(1)Attack, (2)Capture, (3)Switch Active Creature, (4)Use Item" << endl;
+			//cin >> decision;
+			decision = getChoice(1,2,3,4);
+			
+			if (decision == 1)
 			{
 				activeCreature->Attack(opp);
 				cout << opp;
@@ -224,13 +233,13 @@ void Player::battle()
 				}
 				turnEnd = true;
 			}
-			else if (decision == 1)
+			else if (decision == 2)
 			{
 				catchCreature(opp);
 				turnEnd = true;
 				continueBattle = false;
 			}
-			else if (decision == 2)
+			else if (decision == 3)
 			{
 				try {
 					setActiveCreature();
@@ -240,7 +249,7 @@ void Player::battle()
 					cout<<"invalid input" << endl;
 				}
 			}
-			else if (decision == 3)
+			else if (decision == 4)
 			{
 				try
 				{
@@ -266,8 +275,9 @@ int Player::buyItem(int x)
 {
 	int quantity = 0;
 	cout<<"How many would you like to purchase?"<<endl;
-	cin>>quantity;
-
+	//cin>>quantity;
+    quantity = getChoice();
+    
 	if(currency < x*quantity)
 	{
 		cout<<"You do not have enough currency to complete this purchase."<<endl;
@@ -298,14 +308,16 @@ void Player::shop()
 		cout<<"You currently have $"<<currency<<endl;
 		cout<<"Would you like to buy or sell items?"<<endl
 		    <<"(1) Buy"<<endl<<"(2) Sell"<<endl;
-		cin>>inp;
+		//cin>>inp;
+        inp = getChoice(1,2);
 
 		if (inp==1)
 		{
 			cout<<"Which type of item would you like to purchase?"<<endl
 			    <<"(1) Healing Item - $500"<<endl<<"(2) AttackBuff - $150"
 			    <<endl<<"(3) DefenseBuff - $150"<<endl<<"(4) Cancel"<<endl;
-			cin>>inp;
+			//cin>>inp;
+            inp = getChoice(1,2,3,4);
 
 			switch(inp)
 			{
@@ -332,7 +344,8 @@ void Player::shop()
 
 		cout<<"Are you ready to leave the shop?"<<endl
 		    <<"(1) Yes"<<endl<<"(2) No"<<endl;
-		cin>>inp;
+		//cin>>inp;
+		inp = getChoice(1,2);
 		if(inp == 1)
 			stayInShop = false;
 	}
