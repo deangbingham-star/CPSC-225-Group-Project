@@ -29,6 +29,11 @@ Player::Player(ifstream& fin)
     cout<<test<<endl;
 }
 
+void Player::viewStatus()
+{
+    //some code
+}
+
 void Player::addCreature()
 {
 	if (numCreatures >= 3)
@@ -304,7 +309,8 @@ int Player::buyItem(int x)
 
 int Player::sellItem()
 {
-	//sell item
+    
+	
 	return 0;
 }
 
@@ -324,8 +330,8 @@ void Player::shop()
 		if (inp==1)
 		{
 			cout<<"Which type of item would you like to purchase?"<<endl
-			    <<"(1) Healing Item - $500"<<endl<<"(2) AttackBuff - $150"
-			    <<endl<<"(3) DefenseBuff - $150"<<endl<<"(4) Cancel"<<endl;
+			    <<"(1) Healing Item - $500"<<endl<<"(2) Attack Booster - $150"
+			    <<endl<<"(3) Defense Booser - $150"<<endl<<"(4) Cancel"<<endl;
 			//cin>>inp;
             inp = getChoice(1,2,3,4);
 
@@ -349,7 +355,30 @@ void Player::shop()
 
 		else if(inp==2)
 		{
-			sellItem();
+		    cout<<"What would you like to sell?"<<endl
+		        <<"(1) Healing Items\tYou Have: "<<healingItems<<endl
+		        <<"(2) Attack Boosters\tYou Have: "<<attackBuffItems<<endl
+		        <<"(3) Defense Boosters\tYou Have: "<<defenseBuffItems<<endl
+		        <<"(4) Cancel"<<endl;
+		        
+		    inp = getChoice(1,2,3,4);
+		  
+		    switch(inp)
+		    {
+		        case 1:
+		            //sell healing items
+		            break;
+		        case 2:
+		            //sell attackBoosters
+		            break;
+		        case 3:
+		            //sell defenseBoosters
+		            break;
+		        case 4:
+		            break;
+		        default:
+		            cout<<"This shouldn't happen"<<endl;
+		    }
 		}
 
 		cout<<"Are you ready to leave the shop?"<<endl

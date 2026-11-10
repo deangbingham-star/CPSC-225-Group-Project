@@ -29,6 +29,8 @@ public:
 	int sellItem();
     void useItem();
 	
+	void viewStatus();
 	void battle();
 	void shop();
+	bool challengeBoss();
 };
