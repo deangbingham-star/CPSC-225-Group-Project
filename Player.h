@@ -1,4 +1,5 @@
 using std::string;
+using std::ifstream;
 class Player
 {
 private:
@@ -14,6 +15,7 @@ private:
     
 public:
 	Player(string n);
+	Player(ifstream& fin);
 	~Player();
 	
 	void addCreature();

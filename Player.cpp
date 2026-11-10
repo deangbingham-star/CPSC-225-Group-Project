@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Creature.h"
 #include "Player.h"
 #include "CustomUtilities.h"
@@ -6,6 +7,7 @@ using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+//using std::ifstream;
 
 Player::Player(string n = "Joe") : NAME(n)
 {
@@ -17,6 +19,14 @@ Player::Player(string n = "Joe") : NAME(n)
 	attackBuffItems = 0;
 	healingItems = 0;
 	defenseBuffItems = 0;
+}
+
+Player::Player(ifstream& fin)
+{
+    int test = 0;
+    cout<<"Demo constructor called"<<endl;
+    fin>>test;
+    cout<<test<<endl;
 }
 
 void Player::addCreature()
