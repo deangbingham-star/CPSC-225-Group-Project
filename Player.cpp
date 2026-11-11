@@ -23,60 +23,60 @@ Player::Player(string n = "Joe") : NAME(n)
 
 Player::Player(ifstream& fin)
 {
-    int test = 0;
-    cout<<"Data constructor called"<<endl;
+	int test = 0;
+	cout<<"Data constructor called"<<endl;
 
-    //reads in and sets values 
-    fin>>currency;
-    fin>>healingItems;
-    fin>>attackBuffItems;
-    fin>>defenseBuffItems;
-    
-    fin>>numCreatures;
-    cout<<numCreatures<<endl;
-    
-    for(int x = 0; x<numCreatures; x++)
-    {
-        //throws away the newline character so the next line can be read
-        string junk;
-        getline(fin, junk);
-        
-        //gets the creature type from the player data 
-        string CreatureType;
-        getline(fin, CreatureType);
-        
-        //calls corresponding creature type's constructor and passes in the ifstream 
-        if(CreatureType == "Basic Creature")
-            creatures[x] = new Creature(fin);
-        else
-            cout<<"Error"<<endl;
-    }
-    setActiveCreature();
+	//reads in and sets values
+	fin>>currency;
+	fin>>healingItems;
+	fin>>attackBuffItems;
+	fin>>defenseBuffItems;
+
+	fin>>numCreatures;
+	cout<<numCreatures<<endl;
+
+	for(int x = 0; x<numCreatures; x++)
+	{
+		//throws away the newline character so the next line can be read
+		string junk;
+		getline(fin, junk);
+
+		//gets the creature type from the player data
+		string CreatureType;
+		getline(fin, CreatureType);
+
+		//calls corresponding creature type's constructor and passes in the ifstream
+		if(CreatureType == "Basic Creature")
+			creatures[x] = new Creature(fin);
+		else
+			cout<<"Error"<<endl;
+	}
+	setActiveCreature();
 }
 
 void Player::savePlayerData()
 {
-    ofstream fout("PlayerData.txt");
-    
-    //follow print order: currency, healing items, attackBuffItems, defenseBuffItems, numCreatures
-    fout<<currency<<endl;
-    fout<<healingItems<<endl;
-    fout<<attackBuffItems<<endl;
-    fout<<defenseBuffItems<<endl;
-    fout<<numCreatures<<endl;
-    
-    //loop through saving creature data for numCreatures
-    for(int x=0; x<numCreatures; x++)
-    {
-        creatures[x]->saveCreatureData(fout);
-    }
-    
-    fout.close();
+	ofstream fout("PlayerData.txt");
+
+	//follow print order: currency, healing items, attackBuffItems, defenseBuffItems, numCreatures
+	fout<<currency<<endl;
+	fout<<healingItems<<endl;
+	fout<<attackBuffItems<<endl;
+	fout<<defenseBuffItems<<endl;
+	fout<<numCreatures<<endl;
+
+	//loop through saving creature data for numCreatures
+	for(int x=0; x<numCreatures; x++)
+	{
+		creatures[x]->saveCreatureData(fout);
+	}
+
+	fout.close();
 }
 
 void Player::viewStatus()
 {
-    //some code
+	//some code
 }
 
 void Player::addCreature()
@@ -112,7 +112,7 @@ void Player::setActiveCreature()
 	}
 	//cin >> inp;
 	inp = getChoice();
-	
+
 	if (inp > numCreatures)
 		throw inp;
 
@@ -132,7 +132,7 @@ void Player::setActiveCreature(int n)
 
 	//cin >> inp;
 	inp = getChoice();
-	
+
 	if (inp > numCreatures || inp == n || inp < 1)
 		throw inp;
 
@@ -153,7 +153,7 @@ void Player::removeCreature()
 		cout<<x+1<<": "<<creatures[x]->getName()<<endl;
 	}
 	//cin>>inp;
-    inp=getChoice();
+	inp=getChoice();
 
 	if(creatures[inp-1]==activeCreature)
 	{
@@ -222,7 +222,7 @@ void Player::useItem()
 
 	if(healingItems==0&&defenseBuffItems==0&&attackBuffItems==0)
 		throw 0;
-    /*
+	/*
 	else
 	{
 		cout<<"Which item would you like to use?"<<endl;
@@ -234,7 +234,7 @@ void Player::useItem()
 			cout<<"(3) Attack Booster - Available: "<<attackBuffItems<<endl;
 	}
 	cin>>inp;
-	
+
 	if(inp<0||inp>3)
 		cout<<"invalid input"<<endl;
 	else
@@ -245,23 +245,23 @@ void Player::useItem()
 			cout<<x+1<<": "<<creatures[x]<<endl;
 		}
 		cin>>inp;
-		
+
 		if(inp<0||inp>numCreatures)
 		    cout<<"invalid input"<<endl;
 		else
 		{
 		    switch inp:
 		        case 1:
-		            
+
 		            break;
 		        case 2:
 		            break;
 		        case 3:
 		            break;
 		}
-		    
+
 	}
-    */
+	*/
 }
 
 void Player::battle()
@@ -281,7 +281,7 @@ void Player::battle()
 			cout << "(1)Attack, (2)Capture, (3)Switch Active Creature, (4)Use Item" << endl;
 			//cin >> decision;
 			decision = getChoice(1,2,3,4);
-			
+
 			if (decision == 1)
 			{
 				activeCreature->Attack(opp);
@@ -336,9 +336,14 @@ int Player::buyItem(int x)
 	int quantity = 0;
 	cout<<"How many would you like to purchase?"<<endl;
 	//cin>>quantity;
-    quantity = getChoice();
-    
-	if(currency < x*quantity)
+	quantity = getChoice();
+	
+	if(quantity<0)
+	{
+	    cout<<"You can not purchase a negative quantity"<<endl;
+	    return 0;
+	}
+	else if(currency < x*quantity)
 	{
 		cout<<"You do not have enough currency to complete this purchase."<<endl;
 		quantity = 0;
@@ -352,11 +357,44 @@ int Player::buyItem(int x)
 	return quantity;
 }
 
-int Player::sellItem()
+void Player::sellItem(int x)
 {
-    
-	
-	return 0;
+	int quantity = 0;
+	switch(x)
+	{
+	case 1:
+		if(healingItems <= 0)
+			throw quantity;
+		cout<<"How many would you like to sell?"<<endl;
+		quantity = getChoice();
+		if(healingItems < quantity || quantity < 0)
+			throw quantity;
+		healingItems -= quantity;
+		currency += 250*quantity;
+		break;
+	case 2:
+		if(attackBuffItems <= 0)
+			throw quantity;
+		cout<<"How many would you like to sell?"<<endl;
+		quantity = getChoice();
+		if(attackBuffItems < quantity || quantity < 0)
+			throw quantity;
+		attackBuffItems -= quantity;
+		currency += 75*quantity;
+		break;
+	case 3:
+		if(defenseBuffItems <= 0)
+			throw quantity;
+		cout<<"How many would you like to sell?"<<endl;
+		quantity = getChoice();
+		if(defenseBuffItems < quantity || quantity < 0)
+			throw quantity;
+		defenseBuffItems -= quantity;
+		currency += 75*quantity;
+		break;
+	default:
+		cout<<"something bad happened"<<endl;
+	}
 }
 
 void Player::shop()
@@ -370,60 +408,60 @@ void Player::shop()
 		cout<<"Would you like to buy or sell items?"<<endl
 		    <<"(1) Buy"<<endl<<"(2) Sell"<<endl;
 		//cin>>inp;
-        inp = getChoice(1,2);
+		inp = getChoice(1,2);
 
 		if (inp==1)
 		{
 			cout<<"Which type of item would you like to purchase?"<<endl
 			    <<"(1) Healing Item - $500"<<endl<<"(2) Attack Booster - $150"
-			    <<endl<<"(3) Defense Booser - $150"<<endl<<"(4) Cancel"<<endl;
+			    <<endl<<"(3) Defense Booster - $150"<<endl<<"(4) Cancel"<<endl;
 			//cin>>inp;
-            inp = getChoice(1,2,3,4);
+			inp = getChoice(1,2,3,4);
 
-			switch(inp)
+			if(currency<=0)
+				cout<<"You do not have enough money to make any purchases"<<endl;
+			else
 			{
-			case 1:
-				healingItems += buyItem(500);
-				break;
-			case 2:
-				attackBuffItems+= buyItem(150);
-				break;
-			case 3:
-				defenseBuffItems+=buyItem(150);
-				break;
-			case 4:
-				break;
-			default:
-				cout<<"Invalid input (or something bad happened)"<<endl;
+				switch(inp)
+				{
+				case 1:
+					healingItems += buyItem(500);
+					break;
+				case 2:
+					attackBuffItems+= buyItem(150);
+					break;
+				case 3:
+					defenseBuffItems+=buyItem(150);
+					break;
+				case 4:
+					break;
+				default:
+					cout<<"Invalid input (or something bad happened)"<<endl;
+				}
 			}
 		}
 
 		else if(inp==2)
 		{
-		    cout<<"What would you like to sell?"<<endl
-		        <<"(1) Healing Items\tYou Have: "<<healingItems<<endl
-		        <<"(2) Attack Boosters\tYou Have: "<<attackBuffItems<<endl
-		        <<"(3) Defense Boosters\tYou Have: "<<defenseBuffItems<<endl
-		        <<"(4) Cancel"<<endl;
-		        
-		    inp = getChoice(1,2,3,4);
-		  
-		    switch(inp)
-		    {
-		        case 1:
-		            //sell healing items
-		            break;
-		        case 2:
-		            //sell attackBoosters
-		            break;
-		        case 3:
-		            //sell defenseBoosters
-		            break;
-		        case 4:
-		            break;
-		        default:
-		            cout<<"This shouldn't happen"<<endl;
-		    }
+			cout<<"What would you like to sell?"<<endl
+			    <<"(1) Healing Items\tYou Have: "<<healingItems<<endl
+			    <<"(2) Attack Boosters\tYou Have: "<<attackBuffItems<<endl
+			    <<"(3) Defense Boosters\tYou Have: "<<defenseBuffItems<<endl
+			    <<"(4) Cancel"<<endl;
+
+			inp = getChoice(1,2,3,4);
+
+			if(inp!=4)
+			{
+				try
+				{
+					sellItem(inp);
+				}
+				catch(int x)
+				{
+					cout<<"You can not sell the requested quantity of that item"<<endl;
+				}
+			}
 		}
 
 		cout<<"Are you ready to leave the shop?"<<endl

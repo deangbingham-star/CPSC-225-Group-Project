@@ -27,7 +27,7 @@ public:
 	void catchCreature(Creature* c);
 	
 	int buyItem(int x);
-	int sellItem();
+	void sellItem(int x);
     void useItem();
 	
 	void viewStatus();
