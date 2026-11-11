@@ -23,6 +23,7 @@ Creature::Creature()
 Creature::Creature(ifstream& fin)
 {
     cout<<"Saved creature spawned"<<endl;
+    creatureType = "Basic Creature";
     fin>>name;
     fin>>maxHP;
     fin>>currentHP;
