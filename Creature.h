@@ -24,13 +24,14 @@ public:
 	virtual void Attack(Creature* c);
 	void Restore() {
 		currentHP = maxHP;
+		attackBuff = 0;
+		defenseBuff = 0;
 	}
 	int getCurHP() { return currentHP; }
 	void setHP(int x) {
 		maxHP = x;
 		currentHP = x;
 	}
-	
 	void takeDamage(int x);
 	void applyAttackBuff(int x);
 	void applyDefenseBuff(int x);

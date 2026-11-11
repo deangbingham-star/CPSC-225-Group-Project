@@ -78,6 +78,7 @@ Creature::~Creature()
 ostream& operator<<(ostream& os, Creature* c)
 {
     os<<c->name<<endl;
+    os<<"Type: "<<c->creatureType<<endl;
     os<<"Current HP = "<<c->currentHP<<endl;
     os<<"Attack buff status: "<<c->attackBuff<<endl;
     os<<"Defense buff status: "<<c->attackBuff<<endl;

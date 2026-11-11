@@ -18,6 +18,7 @@ int main()
 
 	int decision;
 	bool bossCleared = false;
+	bool quit = false;
 	Player* p;
 
 	cout<<"Welcome!"<<endl;
@@ -49,21 +50,17 @@ int main()
 	}
 
 	//Main gameplay loop
-	while(bossCleared == false)
+	while(bossCleared == false && quit==false)
 	{
 		cout<<"What would you like to do?"<<endl
-		    <<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss"
+		    <<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss\n(5) Quit"
 		    <<endl;
-		decision = getChoice(1,2,3,4);
+		decision = getChoice(1,2,3,4,5);
 
 		if(decision==1)
 		{
-			/*viewStatusFunction
+		    //allows user to view current status and restore creature status
 			p->viewStatus();
-			    inside function will also be ability to restore creature status
-			     (heal HP, reset buff/debuff status to default)
-			    Also will be ability to output current status to PlayerData.txt
-			*/
 		}
 		else if(decision==2)
 		{
@@ -80,9 +77,20 @@ int main()
 			//function with boolean return type, will return true if boss is cleared, else return false.
 			bossCleared = true;
 		}
+		else if(decision==5)
+		    quit = true;
 	}
 	
-	p->savePlayerData();
+	if(bossCleared==true)
+	{
+	    cout<<"Congratulations! You successfully cleared the boss battle!"<<endl;
+	}
+	
+	cout<<"Would you like to save player data before leaving?"<<endl
+	    <<"Any existing data in PlayerData.txt will be overwritten"<<endl<<"(1) Yes\n(2) No"<<endl;
+	decision=getChoice(1,2);
+	if(decision==1)
+    	p->savePlayerData();
 	
 	delete p;
 	return 0;

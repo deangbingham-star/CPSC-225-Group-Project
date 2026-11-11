@@ -51,12 +51,28 @@ Player::Player(ifstream& fin)
 		else
 			cout<<"Error"<<endl;
 	}
-	setActiveCreature();
+	
+	bool successful = false;
+	while(successful==false)
+	{
+	    try
+	    {
+	        setActiveCreature();
+	        successful = true;
+	    }
+	    catch(int x)
+	    {
+	        cout<<"Invalid Option, please try again"<<endl;
+	    }       
+	}
 }
 
 void Player::savePlayerData()
 {
 	ofstream fout("PlayerData.txt");
+
+	if(fout.is_open() == false)
+		throw 0;
 
 	//follow print order: currency, healing items, attackBuffItems, defenseBuffItems, numCreatures
 	fout<<currency<<endl;
@@ -76,7 +92,56 @@ void Player::savePlayerData()
 
 void Player::viewStatus()
 {
-	//some code
+	int decision;
+	cout<<"Current player status: "<<endl<<"Currency: $"<<currency<<endl
+	    <<"Currently carrying:\nHealing Items: "<<healingItems<<endl
+	    <<"Attack Boosters: "<<attackBuffItems<<endl<<"Defense Boosters: "
+	    <<defenseBuffItems<<endl<<"\nOwned creatures: "<<numCreatures<<endl;
+
+	for(int x = 0; x<numCreatures; x++)
+	{
+		cout<<"("<<x+1<<") "<<creatures[x]->getName()<<endl;
+	}
+
+	cout<<"What would you like to do?"<<endl
+	    <<"(1) View Creature Status\n(2) Switch Active Creature\n(3) Return"<<endl;
+	decision = getChoice(1,2,3);
+	if(decision==1)
+	{
+		//Asks user which creature they'd like to display info for, then calls viewStatus for selected creature
+		cout<<"Which creature would you like to view?"<<endl;
+		decision=getChoice(1,2,3);
+		while(decision>numCreatures)
+		{
+			cout<<"invalid input, please try again"<<endl;
+			decision = getChoice(1,2,3);
+		}
+		cout<<creatures[decision];
+
+		cout<<"Would you like to restore this creature's status?"<<endl
+		    <<"(Doing so will restore currentHP to max value and reset all buff/debuff effects)"
+		    <<endl<<"(1) Yes\n(2) No"<<endl;
+		decision = getChoice(1,2);
+
+		if(decision==1)
+			creatures[decision]->Restore();
+	}
+	else if(decision==2)
+	{
+	    bool successful = false;
+		while(successful == false)
+		{
+			try
+			{
+				setActiveCreature();
+				successful = true;
+			}
+			catch(int x)
+			{
+				cout<<"Invalid option"<<endl;
+			}
+		}
+	}
 }
 
 void Player::addCreature()
@@ -113,7 +178,7 @@ void Player::setActiveCreature()
 	//cin >> inp;
 	inp = getChoice();
 
-	if (inp > numCreatures)
+	if (inp > numCreatures || inp <= 0)
 		throw inp;
 
 	activeCreature = creatures[inp - 1];
@@ -327,6 +392,14 @@ void Player::battle()
 			opp->Attack(activeCreature);
 			cout << activeCreature;
 		}
+		
+		if(activeCreature->getCurHP() <= 0)
+		{
+		    cout<<"Active creature has been knocked out"<<endl;
+		    /*
+		    
+		    */
+		}
 
 	}
 }
@@ -337,11 +410,11 @@ int Player::buyItem(int x)
 	cout<<"How many would you like to purchase?"<<endl;
 	//cin>>quantity;
 	quantity = getChoice();
-	
+
 	if(quantity<0)
 	{
-	    cout<<"You can not purchase a negative quantity"<<endl;
-	    return 0;
+		cout<<"You can not purchase a negative quantity"<<endl;
+		return 0;
 	}
 	else if(currency < x*quantity)
 	{

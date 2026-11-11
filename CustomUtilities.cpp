@@ -70,3 +70,17 @@ int getChoice(int a, int b, int c, int d)
 	}
 	return x;
 }
+
+int getChoice(int a, int b, int c, int d, int e)
+{
+	int x;
+	cin>>x;
+	while(!cin||x!=a&&x!=b&&x!=c&&x!=d&&x!=e)
+	{
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout<<"invalid input, please try again"<<endl;
+		cin>>x;
+	}
+	return x;
+}
