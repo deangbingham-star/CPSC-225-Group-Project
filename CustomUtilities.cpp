@@ -1,10 +1,18 @@
 #include <iostream>
 #include <climits>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 #include "CustomUtilities.h"
-using std::cout;
-using std::cin;
-using std::endl;
+using namespace std;
+
+//********************************************
+void wait(int x)
+{
+    //takes int argument and pauses program for X seconds
+	this_thread::sleep_for(chrono::seconds(x));
+}
+//*********************************************
 
 int getRandNum(int min, int max)
 {
