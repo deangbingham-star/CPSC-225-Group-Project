@@ -1,5 +1,6 @@
 using std::ostream;
 using std::ifstream;
+using std::ofstream;
 using std::cout;
 using std::endl;
 using std::string;
@@ -8,6 +9,7 @@ class Creature
 {
 protected:
 	string name;
+	string creatureType;
 	int maxHP;
 	int currentHP;
 	int baseDamage;
@@ -35,6 +37,8 @@ public:
 	
 	void setName(string s) { name = s; }
 	string getName() {return name; }
+	
+	void saveCreatureData(ofstream& fout);
 
 	friend ostream& operator<<(ostream& os, Creature* c);
 };

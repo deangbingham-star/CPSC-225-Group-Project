@@ -54,6 +54,26 @@ Player::Player(ifstream& fin)
     setActiveCreature();
 }
 
+void Player::savePlayerData()
+{
+    ofstream fout("PlayerData.txt");
+    
+    //follow print order: currency, healing items, attackBuffItems, defenseBuffItems, numCreatures
+    fout<<currency<<endl;
+    fout<<healingItems<<endl;
+    fout<<attackBuffItems<<endl;
+    fout<<defenseBuffItems<<endl;
+    fout<<numCreatures<<endl;
+    
+    //loop through saving creature data for numCreatures
+    for(int x=0; x<numCreatures; x++)
+    {
+        creatures[x]->saveCreatureData(fout);
+    }
+    
+    fout.close();
+}
+
 void Player::viewStatus()
 {
     //some code

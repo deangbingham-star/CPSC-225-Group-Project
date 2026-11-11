@@ -16,6 +16,7 @@ private:
 public:
 	Player(string n);
 	Player(ifstream& fin);
+	void savePlayerData();
 	~Player();
 	
 	void addCreature();

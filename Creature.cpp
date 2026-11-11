@@ -10,7 +10,8 @@ using std::ostream;
 Creature::Creature()
 {
     cout<<"Creature spawned"<<endl;
-    name = "Basic Creature";
+    name = "Basic_Creature";
+    creatureType = "Basic Creature";
     maxHP = 50;
     currentHP = 50;
     baseDamage = 10;
@@ -54,6 +55,18 @@ void Creature::Attack(Creature* c)
 {
     cout<<"Attacking!"<<endl;
     c->takeDamage(baseDamage);
+}
+
+void Creature::saveCreatureData(ofstream& fout)
+{
+    //prints Creature stats to fout in order: Creature Type, Creature Name, maxHP, currentHP, baseDamage, attackBuff, defenseBuff
+    fout<<creatureType<<endl;
+    fout<<name<<endl;
+    fout<<maxHP<<endl;
+    fout<<currentHP<<endl;
+    fout<<baseDamage<<endl;
+    fout<<attackBuff<<endl;
+    fout<<defenseBuff<<endl;
 }
 
 Creature::~Creature()

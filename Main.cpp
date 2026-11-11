@@ -82,6 +82,8 @@ int main()
 		}
 	}
 	
+	p->savePlayerData();
+	
 	delete p;
 	return 0;
 }
