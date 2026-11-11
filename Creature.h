@@ -1,4 +1,5 @@
 using std::ostream;
+using std::ifstream;
 using std::cout;
 using std::endl;
 using std::string;
@@ -16,8 +17,9 @@ protected:
 
 public:
 	Creature();
+	Creature(ifstream& fin);
 	~Creature();
-	void Attack(Creature* c);
+	virtual void Attack(Creature* c);
 	void Restore() {
 		currentHP = maxHP;
 	}

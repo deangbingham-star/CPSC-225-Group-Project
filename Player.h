@@ -9,10 +9,10 @@ private:
 	Creature* activeCreature;
 	
 	int currency;
+	int healingItems;
     int attackBuffItems;
     int defenseBuffItems;
-    int healingItems;
-    
+
 public:
 	Player(string n);
 	Player(ifstream& fin);

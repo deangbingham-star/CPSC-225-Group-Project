@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Creature.h"
 #include "CustomUtilities.h"
 using std::string;
@@ -16,6 +17,17 @@ Creature::Creature()
     attackBuff = 0;
     defenseBuff = 0;
     captureRate = 0;
+}
+
+Creature::Creature(ifstream& fin)
+{
+    cout<<"Saved creature spawned"<<endl;
+    fin>>name;
+    fin>>maxHP;
+    fin>>currentHP;
+    fin>>baseDamage;
+    fin>>attackBuff;
+    fin>>defenseBuff;
 }
 
 void Creature::takeDamage(int x)

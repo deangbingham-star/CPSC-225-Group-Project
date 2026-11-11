@@ -16,17 +16,42 @@ Player::Player(string n = "Joe") : NAME(n)
 	addCreature();
 	activeCreature = creatures[0];
 	currency = 1000;
-	attackBuffItems = 0;
 	healingItems = 0;
+	attackBuffItems = 0;
 	defenseBuffItems = 0;
 }
 
 Player::Player(ifstream& fin)
 {
     int test = 0;
-    cout<<"Demo constructor called"<<endl;
-    fin>>test;
-    cout<<test<<endl;
+    cout<<"Data constructor called"<<endl;
+
+    //reads in and sets values 
+    fin>>currency;
+    fin>>healingItems;
+    fin>>attackBuffItems;
+    fin>>defenseBuffItems;
+    
+    fin>>numCreatures;
+    cout<<numCreatures<<endl;
+    
+    for(int x = 0; x<numCreatures; x++)
+    {
+        //throws away the newline character so the next line can be read
+        string junk;
+        getline(fin, junk);
+        
+        //gets the creature type from the player data 
+        string CreatureType;
+        getline(fin, CreatureType);
+        
+        //calls corresponding creature type's constructor and passes in the ifstream 
+        if(CreatureType == "Basic Creature")
+            creatures[x] = new Creature(fin);
+        else
+            cout<<"Error"<<endl;
+    }
+    setActiveCreature();
 }
 
 void Player::viewStatus()
