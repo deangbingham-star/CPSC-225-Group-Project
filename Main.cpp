@@ -1,59 +1,102 @@
-/*
-Dean Bingham- Fred Washington
-main function
-PSEUDOCODE
-
-*/
-
 #include <iostream>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include <fstream>
 #include "Creature.h"
 #include "Player.h"
+#include "CustomUtilities.h"
 using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+//using std::ifstream;
+
+
+
+/*
+COLORS TO BE USED
+
+Dark colors: For console related output
+Dark Yellow -- Console errors
+Dark Red -- Delete creature
+
+bright colors: Player related input
+Light green -- player creatures
+light red -- enemy creatures
+
+*/
 
 int main()
 {
-    bool hasBeatenBoss = false;
-    int userSelect;
-    
-    
-    
+	srand(time(NULL));
+
+	int decision;
+	bool bossCleared = false;
+	Player* p;
+
 	cout<<"Welcome!"<<endl;
 
-	Player p("Karl");
-	cout<<"pre-battle"<<endl;
-	p.battle();
-	cout<<"post battle"<<endl;
-    p.battle();
-    
-    
-    
-    /*
-    while (hasBeatenBoss == false)
-    {
-        //ask user what they want to do
-        cin>> userSelect;
-        
-        if(userSelect == 1)
-        {
-        //do battle function
-        }
-        
-        if(userSelect == 2)
-        {
-            //do shop function
-        }
-        
-        if(userSelect == 3)
-        {
-            //do boss function
-        }
-    }
-    
-    */
-    
-    
+	cout<<"Would you like to import data?"<<endl
+	    <<"(1) Yes"<<endl<<"(2) No"<<endl;
+
+	decision = getChoice(1,2);
+	if(decision==1)
+	{
+		ifstream fin("PlayerData.txt");
+		if(fin.is_open())
+		{
+			cout<<"PlayerData.txt successfully opened"<<endl;
+			p = new Player(fin);
+		}
+		else
+		{
+			cout<<"Could not find PlayerData.txt"<<endl
+			    <<"Creating a new player profile"<<endl;
+			p = new Player("Karl");
+		}
+		fin.close();
+	}
+	else
+	{
+		cout<<"Creating a new player profile"<<endl;
+		p = new Player("Karl");
+	}
+
+	//Main gameplay loop
+	while(bossCleared == false)
+	{
+		cout<<"What would you like to do?"<<endl
+		    <<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss"
+		    <<endl;
+		decision = getChoice(1,2,3,4);
+
+		if(decision==1)
+		{
+			/*viewStatusFunction
+			p->viewStatus();
+			    inside function will also be ability to restore creature status
+			     (heal HP, reset buff/debuff status to default)
+			    Also will be ability to output current status to PlayerData.txt
+			*/
+		}
+		else if(decision==2)
+		{
+			p->battle();
+		}
+		else if(decision==3)
+		{
+			p->shop();
+		}
+		else if(decision==4)
+		{
+			//bossBattle
+			//bossCleared = p->challengeBoss();
+			//function with boolean return type, will return true if boss is cleared, else return false.
+			bossCleared = true;
+		}
+	}
+	
+	delete p;
 	return 0;
 }
