@@ -49,7 +49,7 @@ Player::Player(ifstream& fin)
 		if(CreatureType == "Basic Creature")
 			creatures[x] = new Creature(fin);
 		else if(CreatureType == "Boss Creature")
-		    creatures[x] = new Boss(fin);
+			creatures[x] = new Boss(fin);
 		else
 			cout<<"Error"<<endl;
 	}
@@ -372,10 +372,35 @@ bool Player::battle(bool boss)
 		opp = new Boss();
 		cout<<"You approach the boss and prepare for battle"<<endl;
 	}
-	
+
 	while (continueBattle == true)
 	{
 		bool turnEnd = false;
+
+		if (opp->getCurHP() <= 0)
+		{
+			if(boss == true)
+			{
+				cout<<"The opposing creature has been defeated"<<endl
+				    <<"Your creatures are awarded with 1000xp"<<endl;
+				for(int x = 0; x<numCreatures; x++)
+				{
+					creatures[x]->grantXP(1000);
+				}
+			}
+			else
+			{
+				cout<<"The opposing creature has been defeated"<<endl
+				    <<"Your creatures are awarded with 100xp"<<endl;
+				for(int x = 0; x<numCreatures; x++)
+				{
+					creatures[x]->grantXP(100);
+				}
+			}
+			continueBattle = false;
+			delete opp;
+			return true;
+		}
 
 		if(activeCreature->getCurHP() <= 0)
 		{
@@ -441,11 +466,23 @@ bool Player::battle(bool boss)
 				cout << opp;
 				if (opp->getCurHP() <= 0)
 				{
-					cout<<"The opposing creature has been defeated"<<endl
-					    <<"Your creatures are awarded with 100xp"<<endl;
-					for(int x = 0; x<numCreatures; x++)
+					if(boss == true)
 					{
-						creatures[x]->grantXP(100);
+						cout<<"The opposing creature has been defeated"<<endl
+						    <<"Your creatures are awarded with 1000xp"<<endl;
+						for(int x = 0; x<numCreatures; x++)
+						{
+							creatures[x]->grantXP(1000);
+						}
+					}
+					else
+					{
+						cout<<"The opposing creature has been defeated"<<endl
+						    <<"Your creatures are awarded with 100xp"<<endl;
+						for(int x = 0; x<numCreatures; x++)
+						{
+							creatures[x]->grantXP(100);
+						}
 					}
 					continueBattle = false;
 					delete opp;

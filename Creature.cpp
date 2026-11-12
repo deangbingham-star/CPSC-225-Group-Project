@@ -79,7 +79,7 @@ void Creature::applyDefenseBuff(int x)
 void Creature::grantXP(int x)
 {
 	curXP+=x;
-	if(curXP>=xpToLevel)
+	while(curXP>=xpToLevel)
 	{
 		levelUp();
 	}
@@ -89,7 +89,7 @@ void Creature::levelUp()
 {
 	level++;
 	cout<<"Congratulations, "<<name<<" has reached level "<<level<<endl;
-	curXP = 0;
+	curXP -= xpToLevel;
 	xpToLevel += 50;
 	baseDamage += 10;
 	setHP(maxHP+=25);
@@ -203,7 +203,7 @@ void Boss::levelUp()
 {
     level++;
 	cout<<"Congratulations, "<<name<<" has reached level "<<level<<endl;
-	curXP = 0;
+	curXP -= xpToLevel;
 	xpToLevel += 500;
 	baseDamage += 100;
 	setHP(maxHP+=250);
