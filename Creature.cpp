@@ -266,32 +266,25 @@ void Mage::Attack(Creature* c, bool isOwned)
 	int action;
 	if(isOwned == false)
 	{
-		if(getRandNum(1,2)==2)
-			action = 4;
+		if(getRandNum(1,2)==1)
+			action = 1;
 		else
 			action = 2;
 	}
 	else
 	{
 		cout<<"Which action would you like to take?"<<endl
-		    <<"(1) Buff Team\n(2) Debuff Opponent\n"<<endl
-		    <<"(3) Restore team HP\n(4) Damage Opponent"<<endl;
-		action = getChoice(1,2,3,4);
+		    <<"(1) Debuff Opponent\n(2) Damage Opponent"<<endl;
+		action = getChoice(1,2);
 	}
 	switch(action)
 	{
 	case 1:
-		cout<<"buff team"<<endl;
-		break;
-	case 2:
 		cout<<"debuff opponent"<<endl;
 		c->applyDefenseBuff(-1*(baseDamage+defenseBuff));
 		c->applyAttackBuff(-1*(baseDamage+attackBuff));
 		break;
-	case 3:
-		cout<<"restore team"<<endl;
-		break;
-	case 4:
+	case 2:
 		cout<<"damage opponent"<<endl;
 		c->takeDamage(baseDamage*10);
 		break;
