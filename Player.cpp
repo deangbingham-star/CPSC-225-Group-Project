@@ -48,6 +48,8 @@ Player::Player(ifstream& fin)
 		//calls corresponding creature type's constructor and passes in the ifstream
 		if(CreatureType == "Basic Creature")
 			creatures[x] = new Creature(fin);
+		else if(CreatureType == "Boss Creature")
+		    creatures[x] = new Boss(fin);
 		else
 			cout<<"Error"<<endl;
 	}
@@ -321,17 +323,17 @@ void Player::useItem()
 		cout<<"Which creature would you like to use the item on?"<<endl;
 		for(int x = 0; x<numCreatures; x++)
 		{
-		    cout<<"("<<x+1<<") "<<creatures[x]<<endl;
+			cout<<"("<<x+1<<") "<<creatures[x]<<endl;
 		}
-		
+
 		selection=getChoice(1,2,3);
-		
+
 		while(selection>numCreatures)
 		{
-		    cout<<"invalid input, please try again"<<endl;
-		    selection=getChoice(1,2,3);
+			cout<<"invalid input, please try again"<<endl;
+			selection=getChoice(1,2,3);
 		}
-		
+
 		switch(inp)
 		{
 		case 1:
@@ -339,11 +341,11 @@ void Player::useItem()
 			healingItems--;
 			break;
 		case 2:
-            creatures[selection-1]->applyAttackBuff(1);
+			creatures[selection-1]->applyAttackBuff(1);
 			attackBuffItems--;
 			break;
 		case 3:
-            creatures[selection-1]->applyDefenseBuff(1);
+			creatures[selection-1]->applyDefenseBuff(1);
 			defenseBuffItems--;
 			break;
 		default:
@@ -352,15 +354,25 @@ void Player::useItem()
 	}
 }
 
-void Player::battle()
+bool Player::battle(bool boss)
 {
 	bool continueBattle = true;
 	int decision;
-	cout << "An enemy creature has appeared!" << endl;
+	Creature* opp;
 
-	Creature* opp = new Creature();
-	opp->setName("Enemy");
+	if(boss == false)
+	{
+		cout << "An enemy creature has appeared!" << endl;
 
+		opp = new Creature();
+		opp->setName("Enemy");
+	}
+	else
+	{
+		opp = new Boss();
+		cout<<"You approach the boss and prepare for battle"<<endl;
+	}
+	
 	while (continueBattle == true)
 	{
 		bool turnEnd = false;
@@ -410,8 +422,10 @@ void Player::battle()
 					creatures[x]->Restore();
 				}
 				currency-=100;
-				continueBattle = false;
-				turnEnd = true;
+				delete opp;
+				return false;
+				//continueBattle = false;
+				//turnEnd = true;
 			}
 		}
 
@@ -423,18 +437,19 @@ void Player::battle()
 
 			if (decision == 1)
 			{
-				activeCreature->Attack(opp);
+				activeCreature->Attack(opp, true);
 				cout << opp;
 				if (opp->getCurHP() <= 0)
 				{
-				    cout<<"The opposing creature has been defeated"<<endl
-				        <<"Your creatures are awarded with 100xp"<<endl;
-				    for(int x = 0; x<numCreatures; x++)
-				    {
-				        creatures[x]->grantXP(100);
-				    }
+					cout<<"The opposing creature has been defeated"<<endl
+					    <<"Your creatures are awarded with 100xp"<<endl;
+					for(int x = 0; x<numCreatures; x++)
+					{
+						creatures[x]->grantXP(100);
+					}
 					continueBattle = false;
 					delete opp;
+					return true;
 				}
 				turnEnd = true;
 			}
@@ -442,8 +457,9 @@ void Player::battle()
 			{
 				catchCreature(opp);
 				opp->Restore();
-				turnEnd = true;
-				continueBattle = false;
+				return true;
+				//turnEnd = true;
+				//continueBattle = false;
 			}
 			else if (decision == 3)
 			{
@@ -474,12 +490,13 @@ void Player::battle()
 
 		if (continueBattle == true)
 		{
-		    wait(2);
-			opp->Attack(activeCreature);
+			wait(2);
+			opp->Attack(activeCreature, false);
 			wait(2);
 			cout << activeCreature;
 		}
 	}
+	return false;
 }
 
 int Player::buyItem(int x)

@@ -64,7 +64,7 @@ int main()
 		}
 		else if(decision==2)
 		{
-			p->battle();
+			bool b = p->battle();
 		}
 		else if(decision==3)
 		{
@@ -72,10 +72,7 @@ int main()
 		}
 		else if(decision==4)
 		{
-			//bossBattle
-			//bossCleared = p->challengeBoss();
-			//function with boolean return type, will return true if boss is cleared, else return false.
-			bossCleared = true;
+			bossCleared = p->battle(true);
 		}
 		else if(decision==5)
 		    quit = true;

@@ -31,7 +31,6 @@ public:
     void useItem();
 	
 	void viewStatus();
-	void battle();
+	bool battle(bool boss = false);
 	void shop();
-	bool challengeBoss();
 };

@@ -25,7 +25,7 @@ public:
 	Creature();
 	Creature(ifstream& fin);
 	~Creature();
-	virtual void Attack(Creature* c);
+	virtual void Attack(Creature* c, bool isOwned);
 	void Restore() {
 		currentHP = maxHP;
 		attackBuff = 0;
@@ -38,11 +38,11 @@ public:
 		currentHP = x;
 	}
 	void takeDamage(int x);
-	void applyAttackBuff(int x);
-	void applyDefenseBuff(int x);
+	void applyAttackBuff(int x) {attackBuff += x;}
+	void applyDefenseBuff(int x) {defenseBuff += x;}
 	
 	void grantXP(int x);
-	void levelUp();
+	virtual void levelUp();
 	
 	void setName(string s) { name = s; }
 	string getName() {return name; }
@@ -50,4 +50,16 @@ public:
 	void saveCreatureData(ofstream& fout);
 
 	friend ostream& operator<<(ostream& os, Creature* c);
+};
+
+class Boss : public Creature
+{
+  private:
+    
+  public:
+    Boss();
+    Boss(ifstream& fin);
+    ~Boss();
+    void Attack(Creature* c, bool isOwned); 
+    void levelUp();
 };
