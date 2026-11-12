@@ -19,7 +19,7 @@ Creature::Creature()
 	baseDamage = 10;
 	attackBuff = 0;
 	defenseBuff = 0;
-	captureRate = 0;
+	captureRate = 0.5;
 
 	level = 1;
 	xpToLevel = 100;
@@ -65,19 +65,7 @@ void Creature::takeDamage(int x)
 		cout<<name<<" takes "<<x<<" damage!"<<endl;
 	}
 }
-/*
-void Creature::applyAttackBuff(int x)
-{
-    cout<<"Applying attack buff"<<endl;
-	attackBuff += x;
-}
 
-void Creature::applyDefenseBuff(int x)
-{
-    cout<<"Applying defenes buff"<<endl;
-	defenseBuff += x;
-}
-*/
 void Creature::grantXP(int x)
 {
 	curXP+=x;
@@ -150,7 +138,7 @@ Tank::Tank()
 	baseDamage = 200;
 	attackBuff = 0;
 	defenseBuff = 0;
-	captureRate = 0;
+	captureRate = 0.2;
 
 	level = 1;
 	xpToLevel = 100;
@@ -212,7 +200,7 @@ Fighter::Fighter()
 	baseDamage = 50;
 	attackBuff = 0;
 	defenseBuff = 0;
-	captureRate = 0;
+	captureRate = 0.3;
 
 	level = 1;
 	xpToLevel = 100;
@@ -266,7 +254,7 @@ Mage::Mage()
 	baseDamage = 1;
 	attackBuff = 0;
 	defenseBuff = 0;
-	captureRate = 0;
+	captureRate = 0.3;
 
 	level = 1;
 	xpToLevel = 100;
@@ -351,7 +339,7 @@ Boss::Boss()
 	baseDamage = 100;
 	attackBuff = 0;
 	defenseBuff = 0;
-	captureRate = 0;
+	captureRate = 0.1;
 
 	level = 1;
 	xpToLevel = 1000;

@@ -124,7 +124,7 @@ void Player::viewStatus()
 	decision = getChoice(1,2,3);
 	if(decision==1)
 	{
-		/*Asks user which creature they'd like to display info for, 
+		/*Asks user which creature they'd like to display info for,
 		then calls viewStatus for selected creature*/
 		cout<<"Which creature would you like to view?"<<endl;
 		decision=getChoice(1,2,3);
@@ -283,35 +283,46 @@ void Player::removeCreature()
 //Player actions//
 /******************************************************************************/
 
-void Player::catchCreature(Creature* c)
-{
-	int decision;
-	try
+bool Player::catchCreature(Creature* c)
+{   
+    
+	if(c->getCurHP() <= float(c->getMaxHP())*c->getCaptureRate() || getRandNum(1,20)==20)
 	{
-		addCreature(c);
-	}
-	catch (int x)
-	{
-		cout << "You are carrying the max number of creatures." << endl
-		     << "Would you like to remove a creature to make room?" << endl
-		     <<"(1) Yes\n(2) No"<<endl;
-
-		decision = getChoice(1,2);
-		//cin>>decision;
-
-		if(decision==1)
+		int decision;
+		try
 		{
-			try
+			addCreature(c);
+			return true;
+		}
+		catch (int x)
+		{
+			cout << "You are carrying the max number of creatures." << endl
+			     << "Would you like to remove a creature to make room?" << endl
+			     <<"(1) Yes\n(2) No"<<endl;
+
+			decision = getChoice(1,2);
+
+			if(decision==1)
 			{
-				removeCreature();
-				addCreature(c);
-			}
-			catch(int x)
-			{
-				cout<<"There are no creatures to remove."<<endl;
+				try
+				{
+					removeCreature();
+					addCreature(c);
+					return true;
+				}
+				catch(int x)
+				{
+					cout<<"There are no creatures to remove."<<endl;
+				}
 			}
 		}
 	}
+	else
+	{
+		cout<<"Capture attempt failed"<<endl;
+		return false;
+	}
+	return false;
 }
 
 void Player::useItem()
@@ -378,26 +389,26 @@ bool Player::battle(bool boss)
 
 	if(boss == false)
 	{
-	    int enemyType = getRandNum(1,4);
-	    
-	    switch(enemyType)
-	    {
-	        case 1:
-	            opp = new Creature();
-	            break;
-	        case 2:
-	            opp = new Tank();
-	            break;
-	        case 3:
-	            opp = new Fighter();
-	            break;
-	        case 4:
-	            opp = new Mage();
-	            break;
-	        default:
-	            opp = new Creature();
-	    }
-	       
+		int enemyType = getRandNum(1,4);
+
+		switch(enemyType)
+		{
+		case 1:
+			opp = new Creature();
+			break;
+		case 2:
+			opp = new Tank();
+			break;
+		case 3:
+			opp = new Fighter();
+			break;
+		case 4:
+			opp = new Mage();
+			break;
+		default:
+			opp = new Creature();
+		}
+
 		cout << "An enemy creature has appeared!" << endl;
 		opp->setName("Enemy");
 	}
@@ -490,9 +501,9 @@ bool Player::battle(bool boss)
 
 		while(turnEnd == false)
 		{
-			cout << "\n(1) Attack, (2) Capture, (3) Switch Active Creature, (4) Use Item" << endl;
+			cout << "\n(1) Attack, (2) Capture, (3) Switch Active Creature, (4) Use Item, (5) Escape" << endl;
 			//cin >> decision;
-			decision = getChoice(1,2,3,4);
+			decision = getChoice(1,2,3,4,5);
 
 			if (decision == 1)
 			{
@@ -526,9 +537,15 @@ bool Player::battle(bool boss)
 			}
 			else if (decision == 2)
 			{
-				catchCreature(opp);
-				opp->Restore();
-				return true;
+			    cout<<"You attempt to capture "<<opp->getName()<<endl;
+				bool success = catchCreature(opp);
+				if(success==true)
+				{
+				    cout<<"Capture Successful"<<endl;
+					opp->Restore();
+					return true;
+				}
+				turnEnd = true;
 			}
 			else if (decision == 3)
 			{
@@ -553,6 +570,17 @@ bool Player::battle(bool boss)
 				catch(int x)
 				{
 					cout<<"You have no items available to use"<<endl;
+				}
+			}
+			else if (decision == 5)
+			{
+				if(getRandNum(1,20)==20)
+					cout<<"Escape attempt failed"<<endl;
+				else
+				{
+					cout<<"You escaped successfully"<<endl;
+					delete opp;
+					return true;
 				}
 			}
 		}

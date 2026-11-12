@@ -15,7 +15,7 @@ protected:
 	int baseDamage;
 	int attackBuff;
 	int defenseBuff;
-	int captureRate;
+	float captureRate;
 
 	int level;
 	int xpToLevel;
@@ -36,6 +36,9 @@ public:
 	}
 	int getMaxHP() {
 		return maxHP;
+	}
+	float getCaptureRate() {
+	    return captureRate;
 	}
 	void setHP(int x) {
 		maxHP = x;

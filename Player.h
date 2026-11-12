@@ -24,7 +24,7 @@ public:
 	void removeCreature();
 	void setActiveCreature();
 	void setActiveCreature(int n);
-	void catchCreature(Creature* c);
+	bool catchCreature(Creature* c);
 	
 	int buyItem(int x);
 	void sellItem(int x);
