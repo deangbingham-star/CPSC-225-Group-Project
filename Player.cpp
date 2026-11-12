@@ -332,7 +332,6 @@ void Player::useItem()
 		    selection=getChoice(1,2,3);
 		}
 		
-		
 		switch(inp)
 		{
 		case 1:
@@ -418,7 +417,7 @@ void Player::battle()
 
 		while(turnEnd == false)
 		{
-			cout << "(1)Attack, (2)Capture, (3)Switch Active Creature, (4)Use Item" << endl;
+			cout << "\n(1) Attack, (2) Capture, (3) Switch Active Creature, (4) Use Item" << endl;
 			//cin >> decision;
 			decision = getChoice(1,2,3,4);
 
@@ -428,6 +427,12 @@ void Player::battle()
 				cout << opp;
 				if (opp->getCurHP() <= 0)
 				{
+				    cout<<"The opposing creature has been defeated"<<endl
+				        <<"Your creatures are awarded with 100xp"<<endl;
+				    for(int x = 0; x<numCreatures; x++)
+				    {
+				        creatures[x]->grantXP(100);
+				    }
 					continueBattle = false;
 					delete opp;
 				}
@@ -436,6 +441,7 @@ void Player::battle()
 			else if (decision == 2)
 			{
 				catchCreature(opp);
+				opp->Restore();
 				turnEnd = true;
 				continueBattle = false;
 			}
@@ -468,7 +474,9 @@ void Player::battle()
 
 		if (continueBattle == true)
 		{
+		    wait(2);
 			opp->Attack(activeCreature);
+			wait(2);
 			cout << activeCreature;
 		}
 	}

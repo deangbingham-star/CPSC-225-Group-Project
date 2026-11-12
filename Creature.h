@@ -16,6 +16,10 @@ protected:
 	int attackBuff;
 	int defenseBuff;
 	int captureRate;
+	
+	int level;
+	int xpToLevel;
+	int curXP;
 
 public:
 	Creature();
@@ -36,6 +40,9 @@ public:
 	void takeDamage(int x);
 	void applyAttackBuff(int x);
 	void applyDefenseBuff(int x);
+	
+	void grantXP(int x);
+	void levelUp();
 	
 	void setName(string s) { name = s; }
 	string getName() {return name; }

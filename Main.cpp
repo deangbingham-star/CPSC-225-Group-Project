@@ -57,7 +57,6 @@ int main()
 		    <<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss\n(5) Quit"
 		    <<endl;
 		decision = getChoice(1,2,3,4,5);
-
 		if(decision==1)
 		{
 		    //allows user to view current status and restore creature status
