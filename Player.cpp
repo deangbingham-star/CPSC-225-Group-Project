@@ -7,8 +7,9 @@ using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
-//using std::ifstream;
 
+//Player Initialization//
+/******************************************************************************/
 Player::Player(string n = "Joe") : NAME(n)
 {
 	cout << "" << endl;
@@ -48,6 +49,12 @@ Player::Player(ifstream& fin)
 		//calls corresponding creature type's constructor and passes in the ifstream
 		if(CreatureType == "Basic Creature")
 			creatures[x] = new Creature(fin);
+		else if(CreatureType == "Tank")
+			creatures[x] = new Tank(fin);
+		else if(CreatureType == "Fighter")
+			creatures[x] = new Fighter(fin);
+		else if(CreatureType == "Mage")
+			creatures[x] = new Mage(fin);
 		else if(CreatureType == "Boss Creature")
 			creatures[x] = new Boss(fin);
 		else
@@ -95,7 +102,10 @@ void Player::savePlayerData()
 
 	fout.close();
 }
+/******************************************************************************/
 
+//Player Status Management//
+/******************************************************************************/
 void Player::viewStatus()
 {
 	int decision;
@@ -114,7 +124,8 @@ void Player::viewStatus()
 	decision = getChoice(1,2,3);
 	if(decision==1)
 	{
-		//Asks user which creature they'd like to display info for, then calls viewStatus for selected creature
+		/*Asks user which creature they'd like to display info for, 
+		then calls viewStatus for selected creature*/
 		cout<<"Which creature would you like to view?"<<endl;
 		decision=getChoice(1,2,3);
 		while(decision>numCreatures)
@@ -267,6 +278,11 @@ void Player::removeCreature()
 	numCreatures--;
 }
 
+/******************************************************************************/
+
+//Player actions//
+/******************************************************************************/
+
 void Player::catchCreature(Creature* c)
 {
 	int decision;
@@ -362,9 +378,27 @@ bool Player::battle(bool boss)
 
 	if(boss == false)
 	{
+	    int enemyType = getRandNum(1,4);
+	    
+	    switch(enemyType)
+	    {
+	        case 1:
+	            opp = new Creature();
+	            break;
+	        case 2:
+	            opp = new Tank();
+	            break;
+	        case 3:
+	            opp = new Fighter();
+	            break;
+	        case 4:
+	            opp = new Mage();
+	            break;
+	        default:
+	            opp = new Creature();
+	    }
+	       
 		cout << "An enemy creature has appeared!" << endl;
-
-		opp = new Creature();
 		opp->setName("Enemy");
 	}
 	else
@@ -495,8 +529,6 @@ bool Player::battle(bool boss)
 				catchCreature(opp);
 				opp->Restore();
 				return true;
-				//turnEnd = true;
-				//continueBattle = false;
 			}
 			else if (decision == 3)
 			{
@@ -677,7 +709,10 @@ void Player::shop()
 			stayInShop = false;
 	}
 }
+/******************************************************************************/
 
+//Player deletion//
+/******************************************************************************/
 Player::~Player()
 {
 	for (int x = numCreatures; x > 0; x--)
@@ -686,3 +721,4 @@ Player::~Player()
 		numCreatures--;
 	}
 }
+/******************************************************************************/
