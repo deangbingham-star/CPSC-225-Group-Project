@@ -66,7 +66,7 @@ Player::Player(ifstream& fin)
 		}
 		catch(string s)
 		{
-		    cout<<s<<endl;
+			cout<<s<<endl;
 		}
 	}
 }
@@ -130,7 +130,7 @@ void Player::viewStatus()
 		if(confirmation==1)
 		{
 			creatures[decision-1]->Restore();
-		    currency-=50;
+			currency-=50;
 		}
 	}
 	else if(decision==2)
@@ -149,7 +149,7 @@ void Player::viewStatus()
 			}
 			catch(string s)
 			{
-			    cout<<s<<endl;
+				cout<<s<<endl;
 			}
 		}
 	}
@@ -182,7 +182,7 @@ void Player::setActiveCreature()
 {
 	int inp;
 	string unavailable = "That creature is currently knocked out";
-	
+
 	cout<<"Which creature would you like to set active?" << endl;
 	for (int x = 0; x < numCreatures; x++)
 	{
@@ -298,50 +298,59 @@ void Player::catchCreature(Creature* c)
 
 void Player::useItem()
 {
-	int inp;
+	int inp, selection;
 
 	if(healingItems==0&&defenseBuffItems==0&&attackBuffItems==0)
 		throw 0;
-	/*
-	else
+	cout<<"What type of item would you like to use?"<<endl
+	    <<"(1) Healing Item\tYou Have: "<<healingItems<<endl
+	    <<"(2) Attack Booster\tYou Have: "<<attackBuffItems<<endl
+	    <<"(3) Defense Booster\t You Have: "<<defenseBuffItems<<endl
+	    <<"(4) Cancel"<<endl;
+	inp = getChoice(1,2,3,4);
+
+	if(healingItems==0 && inp==1)
+		throw 0;
+	if(attackBuffItems==0 && inp==2)
+		throw 0;
+	if(defenseBuffItems==0 && inp==3)
+		throw 0;
+
+	if(inp!=4)
 	{
-		cout<<"Which item would you like to use?"<<endl;
-		if(healingItems>0)
-			cout<<"(1) Healing Item - Available: "<<healingItems<<endl;
-		if(defenseBuffItems>0)
-			cout<<"(2) Defense Booster - Available: "<<defenseBuffItems<<endl;
-		if(attackBuffItems>0)
-			cout<<"(3) Attack Booster - Available: "<<attackBuffItems<<endl;
-	}
-	cin>>inp;
-
-	if(inp<0||inp>3)
-		cout<<"invalid input"<<endl;
-	else
-	{
-	    cout<<"Which creature would you like to use the item on?"<<endl;
-		for (int x = 0; x < numCreatures; x++)
+		cout<<"Which creature would you like to use the item on?"<<endl;
+		for(int x = 0; x<numCreatures; x++)
 		{
-			cout<<x+1<<": "<<creatures[x]<<endl;
+		    cout<<"("<<x+1<<") "<<creatures[x]<<endl;
 		}
-		cin>>inp;
-
-		if(inp<0||inp>numCreatures)
-		    cout<<"invalid input"<<endl;
-		else
+		
+		selection=getChoice(1,2,3);
+		
+		while(selection>numCreatures)
 		{
-		    switch inp:
-		        case 1:
-
-		            break;
-		        case 2:
-		            break;
-		        case 3:
-		            break;
+		    cout<<"invalid input, please try again"<<endl;
+		    selection=getChoice(1,2,3);
 		}
-
+		
+		
+		switch(inp)
+		{
+		case 1:
+			creatures[selection-1]->setHP(creatures[selection-1]->getMaxHP());
+			healingItems--;
+			break;
+		case 2:
+            creatures[selection-1]->applyAttackBuff(1);
+			attackBuffItems--;
+			break;
+		case 3:
+            creatures[selection-1]->applyDefenseBuff(1);
+			defenseBuffItems--;
+			break;
+		default:
+			cout<<"This is bad"<<endl;
+		}
 	}
-	*/
 }
 
 void Player::battle()
@@ -355,12 +364,12 @@ void Player::battle()
 
 	while (continueBattle == true)
 	{
-	    bool turnEnd = false;
-	    
-	    if(activeCreature->getCurHP() <= 0)
+		bool turnEnd = false;
+
+		if(activeCreature->getCurHP() <= 0)
 		{
 			bool canSwitch = false;
-			
+
 			cout<<activeCreature->getName()<<" has been knocked out"<<endl;
 
 			for(int x=0; x<numCreatures; x++)
@@ -388,7 +397,7 @@ void Player::battle()
 					}
 					catch(string s)
 					{
-					    cout<<s<<endl;
+						cout<<s<<endl;
 					}
 				}
 			}
@@ -397,16 +406,16 @@ void Player::battle()
 				cout<<"All of your creatures have been knocked out"<<endl
 				    <<"You are forced to retreat from the battle "<<endl
 				    <<"$100 are spent to restore your creatures"<<endl;
-                for(int x = 0; x<numCreatures; x++)
-                {
-                    creatures[x]->Restore();    
-                }
+				for(int x = 0; x<numCreatures; x++)
+				{
+					creatures[x]->Restore();
+				}
 				currency-=100;
 				continueBattle = false;
 				turnEnd = true;
 			}
 		}
-		
+
 		while(turnEnd == false)
 		{
 			cout << "(1)Attack, (2)Capture, (3)Switch Active Creature, (4)Use Item" << endl;
@@ -441,7 +450,7 @@ void Player::battle()
 				}
 				catch(string s)
 				{
-				    cout<<s<<endl;
+					cout<<s<<endl;
 				}
 			}
 			else if (decision == 4)

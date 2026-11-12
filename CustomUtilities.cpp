@@ -9,7 +9,7 @@ using namespace std;
 //********************************************
 void wait(int x)
 {
-    //takes int argument and pauses program for X seconds
+	//takes int argument and pauses program for X seconds
 	this_thread::sleep_for(chrono::seconds(x));
 }
 //*********************************************

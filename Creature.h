@@ -28,6 +28,7 @@ public:
 		defenseBuff = 0;
 	}
 	int getCurHP() { return currentHP; }
+	int getMaxHP() { return maxHP; }
 	void setHP(int x) {
 		maxHP = x;
 		currentHP = x;
