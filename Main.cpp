@@ -22,6 +22,7 @@ int main()
 	Player* p;
 
 	cout<<"Welcome!"<<endl;
+	wait(1);
 
 	cout<<"Would you like to import data?"<<endl
 	    <<"(1) Yes"<<endl<<"(2) No"<<endl;

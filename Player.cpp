@@ -51,19 +51,23 @@ Player::Player(ifstream& fin)
 		else
 			cout<<"Error"<<endl;
 	}
-	
+
 	bool successful = false;
 	while(successful==false)
 	{
-	    try
-	    {
-	        setActiveCreature();
-	        successful = true;
-	    }
-	    catch(int x)
-	    {
-	        cout<<"Invalid Option, please try again"<<endl;
-	    }       
+		try
+		{
+			setActiveCreature();
+			successful = true;
+		}
+		catch(int x)
+		{
+			cout<<"Invalid Option, please try again"<<endl;
+		}
+		catch(string s)
+		{
+		    cout<<s<<endl;
+		}
 	}
 }
 
@@ -116,19 +120,22 @@ void Player::viewStatus()
 			cout<<"invalid input, please try again"<<endl;
 			decision = getChoice(1,2,3);
 		}
-		cout<<creatures[decision];
+		cout<<creatures[decision-1];
 
-		cout<<"Would you like to restore this creature's status?"<<endl
+		cout<<"Would you like to restore this creature's status? Cost: $50"<<endl
 		    <<"(Doing so will restore currentHP to max value and reset all buff/debuff effects)"
 		    <<endl<<"(1) Yes\n(2) No"<<endl;
-		decision = getChoice(1,2);
+		int confirmation = getChoice(1,2);
 
-		if(decision==1)
-			creatures[decision]->Restore();
+		if(confirmation==1)
+		{
+			creatures[decision-1]->Restore();
+		    currency-=50;
+		}
 	}
 	else if(decision==2)
 	{
-	    bool successful = false;
+		bool successful = false;
 		while(successful == false)
 		{
 			try
@@ -139,6 +146,10 @@ void Player::viewStatus()
 			catch(int x)
 			{
 				cout<<"Invalid option"<<endl;
+			}
+			catch(string s)
+			{
+			    cout<<s<<endl;
 			}
 		}
 	}
@@ -170,6 +181,8 @@ void Player::addCreature(Creature* c)
 void Player::setActiveCreature()
 {
 	int inp;
+	string unavailable = "That creature is currently knocked out";
+	
 	cout<<"Which creature would you like to set active?" << endl;
 	for (int x = 0; x < numCreatures; x++)
 	{
@@ -180,6 +193,8 @@ void Player::setActiveCreature()
 
 	if (inp > numCreatures || inp <= 0)
 		throw inp;
+	if (creatures[inp-1]->getCurHP()<=0)
+		throw unavailable;
 
 	activeCreature = creatures[inp - 1];
 	cout<<"Your active creature is now "<<activeCreature->getName()<<endl;
@@ -340,7 +355,58 @@ void Player::battle()
 
 	while (continueBattle == true)
 	{
-		bool turnEnd = false;
+	    bool turnEnd = false;
+	    
+	    if(activeCreature->getCurHP() <= 0)
+		{
+			bool canSwitch = false;
+			
+			cout<<activeCreature->getName()<<" has been knocked out"<<endl;
+
+			for(int x=0; x<numCreatures; x++)
+			{
+				if(creatures[x]->getCurHP()>0)
+				{
+					canSwitch = true;
+				}
+				cout<<canSwitch<<endl;
+			}
+
+			if(canSwitch == true)
+			{
+				bool successful = false;
+				while(successful == false)
+				{
+					try
+					{
+						setActiveCreature();
+						successful = true;
+					}
+					catch(int x)
+					{
+						cout<<"invalid input, please try again"<<endl;
+					}
+					catch(string s)
+					{
+					    cout<<s<<endl;
+					}
+				}
+			}
+			else
+			{
+				cout<<"All of your creatures have been knocked out"<<endl
+				    <<"You are forced to retreat from the battle "<<endl
+				    <<"$100 are spent to restore your creatures"<<endl;
+                for(int x = 0; x<numCreatures; x++)
+                {
+                    creatures[x]->Restore();    
+                }
+				currency-=100;
+				continueBattle = false;
+				turnEnd = true;
+			}
+		}
+		
 		while(turnEnd == false)
 		{
 			cout << "(1)Attack, (2)Capture, (3)Switch Active Creature, (4)Use Item" << endl;
@@ -373,6 +439,10 @@ void Player::battle()
 				{
 					cout<<"invalid input" << endl;
 				}
+				catch(string s)
+				{
+				    cout<<s<<endl;
+				}
 			}
 			else if (decision == 4)
 			{
@@ -392,15 +462,6 @@ void Player::battle()
 			opp->Attack(activeCreature);
 			cout << activeCreature;
 		}
-		
-		if(activeCreature->getCurHP() <= 0)
-		{
-		    cout<<"Active creature has been knocked out"<<endl;
-		    /*
-		    
-		    */
-		}
-
 	}
 }
 
