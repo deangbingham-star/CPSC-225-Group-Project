@@ -2,6 +2,7 @@
 #include <fstream>
 #include "Creature.h"
 #include "Player.h"
+#include "Color.h"
 #include "CustomUtilities.h"
 using std::string;
 using std::cout;
@@ -71,7 +72,7 @@ Player::Player(ifstream& fin)
 		}
 		catch(int x)
 		{
-			cout<<"Invalid Option, please try again"<<endl;
+			Colorize(BOLDRED, "invalid input, please try again");
 		}
 		catch(string s)
 		{
@@ -130,7 +131,7 @@ void Player::viewStatus()
 		decision=getChoice(1,2,3);
 		while(decision>numCreatures)
 		{
-			cout<<"invalid input, please try again"<<endl;
+			Colorize(BOLDRED, "invalid input, please try again");
 			decision = getChoice(1,2,3);
 		}
 		cout<<creatures[decision-1];
@@ -158,7 +159,7 @@ void Player::viewStatus()
 			}
 			catch(int x)
 			{
-				cout<<"Invalid option"<<endl;
+				Colorize(BOLDRED, "invalid input");
 			}
 			catch(string s)
 			{
@@ -262,7 +263,7 @@ void Player::removeCreature()
 			}
 			catch(int x)
 			{
-				cout<<"Invalid option. Please try again."<<endl;
+				Colorize(BOLDRED, "invalid input, please try again");
 			}
 		}
 	}
@@ -357,7 +358,7 @@ void Player::useItem()
 
 		while(selection>numCreatures)
 		{
-			cout<<"invalid input, please try again"<<endl;
+			Colorize(BOLDRED, "invalid input, please try again");
 			selection=getChoice(1,2,3);
 		}
 
@@ -376,7 +377,7 @@ void Player::useItem()
 			defenseBuffItems--;
 			break;
 		default:
-			cout<<"This is bad"<<endl;
+			Colorize(BOLDRED, "ERROR");
 		}
 	}
 }
@@ -474,7 +475,7 @@ bool Player::battle(bool boss)
 					}
 					catch(int x)
 					{
-						cout<<"invalid input, please try again"<<endl;
+						Colorize(BOLDRED, "invalid input, please try again");
 					}
 					catch(string s)
 					{
@@ -554,7 +555,7 @@ bool Player::battle(bool boss)
 				}
 				catch (int x)
 				{
-					cout<<"invalid input" << endl;
+					Colorize(BOLDRED, "invalid input");
 				}
 				catch(string s)
 				{
@@ -658,7 +659,7 @@ void Player::sellItem(int x)
 		currency += 75*quantity;
 		break;
 	default:
-		cout<<"something bad happened"<<endl;
+		Colorize(BOLDRED, "ERROR");
 	}
 }
 
@@ -701,7 +702,7 @@ void Player::shop()
 				case 4:
 					break;
 				default:
-					cout<<"Invalid input (or something bad happened)"<<endl;
+					Colorize(BOLDRED, "ERROR");
 				}
 			}
 		}

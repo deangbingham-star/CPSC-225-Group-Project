@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Creature.h"
+#include "Color.h"
 #include "CustomUtilities.h"
 using std::string;
 using std::cout;
@@ -289,7 +290,7 @@ void Mage::Attack(Creature* c, bool isOwned)
 		c->takeDamage(baseDamage*10);
 		break;
 	default:
-		cout<<"Yikes! Not Good"<<endl;
+		Colorize(BOLDRED, "ERROR");
 	}
 }
 

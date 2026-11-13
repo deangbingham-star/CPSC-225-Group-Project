@@ -11,7 +11,6 @@ using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
-//using std::ifstream;
 
 int main()
 {
@@ -39,8 +38,10 @@ int main()
 		}
 		else
 		{
-			cout<<"Could not find PlayerData.txt"<<endl
-			    <<"Creating a new player profile"<<endl;
+			Colorize(BOLDRED, "Could not find PlayerData.txt");
+            
+			cout<<"\nCreating a new player profile"<<endl;
+			wait(1);
 			p = new Player("Karl");
 		}
 		fin.close();
@@ -48,6 +49,7 @@ int main()
 	else
 	{
 		cout<<"Creating a new player profile"<<endl;
+		wait(1);
 		p = new Player("Karl");
 	}
 
