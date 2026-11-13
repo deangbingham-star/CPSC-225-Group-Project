@@ -1,7 +1,7 @@
 /*
 Color header file
 */
-#include <iostream>
+
 using std::string;
 
 #define DEFAULT "\033[0m"  //Default/white
@@ -9,7 +9,6 @@ using std::string;
 #define DRed    "\033[31m" //Dark Red
 #define BGreen  "\033[1m\033[32m" //Bold green
 #define BRed    "\033[1m\033[31m" //Bold Red
-
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
 #define RED     "\033[31m"      /* Red */
@@ -28,4 +27,4 @@ using std::string;
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-void Colorize(string color, string text) {cout<<color<<text<<DEFAULT<<endl;}
+void Colorize(string color, string text);
