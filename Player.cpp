@@ -25,6 +25,7 @@ Player::Player(string n = "Joe") : NAME(n)
 
 Player::Player(ifstream& fin)
 {
+    string error = "Error while reading from PlayerData.txt";
 	int test = 0;
 	cout<<"Data constructor called"<<endl;
 
@@ -56,7 +57,7 @@ Player::Player(ifstream& fin)
 		else if(CreatureType == "Boss_Creature")
 			creatures[x] = new Boss(fin);
 		else
-			Colorize(BOLDRED, "Error");
+		    throw error;
 	}
 
 	bool successful = false;

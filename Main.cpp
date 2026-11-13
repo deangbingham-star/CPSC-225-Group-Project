@@ -34,7 +34,19 @@ int main()
 		if(fin.is_open())
 		{
 			Colorize(BOLDGREEN, "PlayerData.txt successfully opened");
-			p = new Player(fin);
+			try
+			{
+				p = new Player(fin);
+			}
+			catch(string s)
+			{
+				Colorize(BOLDRED, s);
+				wait(1);
+
+				Colorize(BOLDYELLOW,"\nCreating a new player profile");
+				wait(1);
+				p = new Player("Karl");
+			}
 		}
 		else
 		{
@@ -95,7 +107,7 @@ int main()
 	Colorize(BOLDYELLOW, "Would you like to save player data before leaving?");
 	Colorize(RED, "Any existing data in PlayerData.txt will be overwritten");
 	cout<<"(1) Yes\n(2) No"<<endl;
-	
+
 	decision=getChoice(1,2);
 	if(decision==1)
 		p->savePlayerData();
