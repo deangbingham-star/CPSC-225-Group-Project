@@ -12,9 +12,9 @@ using std::ostream;
 /******************************************************************************/
 Creature::Creature()
 {
-	cout<<"Creature spawned"<<endl;
+	//cout<<"Creature spawned"<<endl;
 	name = "Basic_Creature";
-	creatureType = "Basic Creature";
+	creatureType = "Basic_Creature";
 	maxHP = 50;
 	currentHP = 50;
 	baseDamage = 10;
@@ -30,7 +30,7 @@ Creature::Creature()
 Creature::Creature(ifstream& fin)
 {
 	cout<<"Saved creature spawned"<<endl;
-	creatureType = "Basic Creature";
+	creatureType = "Basic_Creature";
 	fin>>name;
 	fin>>maxHP;
 	fin>>currentHP;
@@ -115,13 +115,20 @@ Creature::~Creature()
 
 ostream& operator<<(ostream& os, Creature* c)
 {
-	os<<c->name<<endl;
+	os<<BOLDCYAN<<c->name<<DEFAULT<<endl;
+	wait(1);
 	os<<"Type: "<<c->creatureType<<endl;
+	wait(1);
 	os<<"Level: "<<c->level<<endl;
+	wait(1);
 	os<<"Level progress: "<<c->curXP<<"/"<<c->xpToLevel<<endl;
+	wait(1);
 	os<<"Current HP = "<<c->currentHP<<"/"<<c->maxHP<<endl;
+	wait(1);
 	os<<"Attack buff status: "<<c->attackBuff<<endl;
+	wait(1);
 	os<<"Defense buff status: "<<c->attackBuff<<endl;
+	wait(1);
 
 	return os;
 }
@@ -327,7 +334,7 @@ Boss::Boss()
 {
 	cout<<"Boss creature spawned"<<endl;
 	name = "Boss";
-	creatureType = "Boss Creature";
+	creatureType = "Boss_Creature";
 	maxHP = 500;
 	currentHP = 500;
 	baseDamage = 100;
@@ -401,7 +408,7 @@ void Boss::levelUp()
 Boss::Boss(ifstream& fin)
 {
 	cout<<"Saved boss creature spawned"<<endl;
-	creatureType = "Boss Creature";
+	creatureType = "Boss_Creature";
 	fin>>name;
 	fin>>maxHP;
 	fin>>currentHP;
@@ -411,6 +418,7 @@ Boss::Boss(ifstream& fin)
 
 	fin>>level;
 	fin>>xpToLevel;
-	fin>>curXP;
+	fin>>curXP;	
+
 }
 /******************************************************************************/

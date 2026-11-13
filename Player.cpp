@@ -39,27 +39,24 @@ Player::Player(ifstream& fin)
 
 	for(int x = 0; x<numCreatures; x++)
 	{
-		//throws away the newline character so the next line can be read
-		string junk;
-		getline(fin, junk);
-
-		//gets the creature type from the player data
-		string CreatureType;
-		getline(fin, CreatureType);
-
+        string CreatureType;
+        fin>>CreatureType;
+        
 		//calls corresponding creature type's constructor and passes in the ifstream
-		if(CreatureType == "Basic Creature")
+		if(CreatureType == "Basic_Creature")
 			creatures[x] = new Creature(fin);
 		else if(CreatureType == "Tank")
 			creatures[x] = new Tank(fin);
 		else if(CreatureType == "Fighter")
 			creatures[x] = new Fighter(fin);
+			
 		else if(CreatureType == "Mage")
 			creatures[x] = new Mage(fin);
-		else if(CreatureType == "Boss Creature")
+			
+		else if(CreatureType == "Boss_Creature")
 			creatures[x] = new Boss(fin);
 		else
-			cout<<"Error"<<endl;
+			Colorize(BOLDRED, "Error");
 	}
 
 	bool successful = false;
@@ -110,18 +107,31 @@ void Player::savePlayerData()
 void Player::viewStatus()
 {
 	int decision;
-	cout<<"Current player status: "<<endl<<"Currency: $"<<currency<<endl
-	    <<"Currently carrying:\nHealing Items: "<<healingItems<<endl
-	    <<"Attack Boosters: "<<attackBuffItems<<endl<<"Defense Boosters: "
-	    <<defenseBuffItems<<endl<<"\nOwned creatures: "<<numCreatures<<endl;
+	Colorize(BOLDCYAN, "Current player status:");
+	wait(1);
+	cout<<"Currency: $"<<currency<<endl;
+	wait(1);
+	cout<<"\nCurrently carrying:"<<endl;
+	wait(1);
+	cout<<"Healing Items: "<<healingItems<<endl;
+	wait(1);
+	cout<<"Attack Boosters: "<<attackBuffItems<<endl;
+	wait(1);
+	cout<<"Defense Boosters: "<<defenseBuffItems<<endl;
+	wait(1);
+	cout<<"\nOwned creatures: "<<numCreatures<<endl;
+	wait(1);
 
 	for(int x = 0; x<numCreatures; x++)
 	{
+		cout<<BOLDCYAN;
 		cout<<"("<<x+1<<") "<<creatures[x]->getName()<<endl;
+		cout<<DEFAULT;
+		wait(1);
 	}
+	Colorize(BOLDYELLOW, "\nWhat would you like to do?");
+	cout<<"(1) View Creature Status\n(2) Switch Active Creature\n(3) Return"<<endl;
 
-	cout<<"What would you like to do?"<<endl
-	    <<"(1) View Creature Status\n(2) Switch Active Creature\n(3) Return"<<endl;
 	decision = getChoice(1,2,3);
 	if(decision==1)
 	{
@@ -136,9 +146,9 @@ void Player::viewStatus()
 		}
 		cout<<creatures[decision-1];
 
-		cout<<"Would you like to restore this creature's status? Cost: $50"<<endl
-		    <<"(Doing so will restore currentHP to max value and reset all buff/debuff effects)"
-		    <<endl<<"(1) Yes\n(2) No"<<endl;
+		Colorize(BOLDYELLOW, "\nWould you like to restore this creature's status? Cost: $50");
+		Colorize(RED, "(Doing so will restore currentHP to max value and reset all buff/debuff effects)");
+		cout<<"(1) Yes\n(2) No"<<endl;
 		int confirmation = getChoice(1,2);
 
 		if(confirmation==1)
@@ -197,11 +207,14 @@ void Player::setActiveCreature()
 	int inp;
 	string unavailable = "That creature is currently knocked out";
 
-	cout<<"Which creature would you like to set active?" << endl;
+	Colorize(BOLDYELLOW, "Which creature would you like to set active?");
+	wait(1);
+	cout<<BOLDCYAN;
 	for (int x = 0; x < numCreatures; x++)
 	{
 		cout<<x+1<<": "<<creatures[x]->getName()<<endl;
 	}
+	cout<<DEFAULT;
 	//cin >> inp;
 	inp = getChoice();
 
@@ -211,13 +224,14 @@ void Player::setActiveCreature()
 		throw unavailable;
 
 	activeCreature = creatures[inp - 1];
+	wait(1);
 	cout<<"Your active creature is now "<<activeCreature->getName()<<endl;
 }
 
 void Player::setActiveCreature(int n)
 {
 	int inp;
-	cout<<"Which creature would you like to set active?" << endl;
+	Colorize(BOLDYELLOW, "Which creature would you like to set active?");
 	for (int x = 0; x < numCreatures; x++)
 	{
 		if(x!=n-1)
@@ -240,7 +254,7 @@ void Player::removeCreature()
 		throw numCreatures;
 
 	int inp;
-	cout<<"Which creature would you like to remove?" << endl;
+	Colorize(BOLDYELLOW, "Which creature would you like to remove?");
 
 	for (int x = 0; x<numCreatures; x++)
 	{
@@ -252,8 +266,9 @@ void Player::removeCreature()
 	if(creatures[inp-1]==activeCreature)
 	{
 		bool successful = false;
-		cout<<"You are attempting to delete your currently active creature"<<endl
-		    <<"Please set a different active creature before proceeding"<<endl;
+		Colorize(BOLDRED, "You are attempting to delete your currently active creature");
+		Colorize(BOLDYELLOW, "Please set a different active creature before proceeding");
+		
 		while(successful==false)
 		{
 			try
@@ -285,8 +300,8 @@ void Player::removeCreature()
 /******************************************************************************/
 
 bool Player::catchCreature(Creature* c)
-{   
-    
+{
+
 	if(c->getCurHP() <= float(c->getMaxHP())*c->getCaptureRate() || getRandNum(1,20)==20)
 	{
 		int decision;
@@ -387,6 +402,8 @@ bool Player::battle(bool boss)
 	bool continueBattle = true;
 	int decision;
 	Creature* opp;
+	
+	wait(1);
 
 	if(boss == false)
 	{
@@ -410,13 +427,15 @@ bool Player::battle(bool boss)
 			opp = new Creature();
 		}
 
-		cout << "An enemy creature has appeared!" << endl;
+		Colorize(BOLDYELLOW, "An enemy creature has appeared!");
+		wait(1);
 		opp->setName("Enemy");
 	}
 	else
 	{
 		opp = new Boss();
-		cout<<"You approach the boss and prepare for battle"<<endl;
+		Colorize(BOLDYELLOW, "You approach the boss and prepare for battle");
+		wait(1);
 	}
 
 	while (continueBattle == true)
@@ -427,8 +446,9 @@ bool Player::battle(bool boss)
 		{
 			if(boss == true)
 			{
-				cout<<"The opposing creature has been defeated"<<endl
-				    <<"Your creatures are awarded with 1000xp"<<endl;
+				Colorize(BOLDGREEN, "The boss has been defeated!");
+				wait(1);
+			    Colorize(YELLOW, "Your creatures are awarded with 1000xp");
 				for(int x = 0; x<numCreatures; x++)
 				{
 					creatures[x]->grantXP(1000);
@@ -436,8 +456,8 @@ bool Player::battle(bool boss)
 			}
 			else
 			{
-				cout<<"The opposing creature has been defeated"<<endl
-				    <<"Your creatures are awarded with 100xp"<<endl;
+				Colorize(BOLDGREEN, "The opposing creature has been defeated!");
+			    Colorize(YELLOW, "Your creatures are awarded with 100xp");
 				for(int x = 0; x<numCreatures; x++)
 				{
 					creatures[x]->grantXP(100);
@@ -452,7 +472,7 @@ bool Player::battle(bool boss)
 		{
 			bool canSwitch = false;
 
-			cout<<activeCreature->getName()<<" has been knocked out"<<endl;
+			cout<<BOLDRED<<activeCreature->getName()<<" has been knocked out"<<DEFAULT<<endl;
 
 			for(int x=0; x<numCreatures; x++)
 			{
@@ -479,15 +499,16 @@ bool Player::battle(bool boss)
 					}
 					catch(string s)
 					{
-						cout<<s<<endl;
+						Colorize(BOLDRED, s);
 					}
 				}
 			}
 			else
 			{
-				cout<<"All of your creatures have been knocked out"<<endl
-				    <<"You are forced to retreat from the battle "<<endl
-				    <<"$100 are spent to restore your creatures"<<endl;
+				Colorize(BOLDRED, "All of your creatures have been knocked out");
+				wait(1);
+                Colorize(YELLOW, "You are forced to retreat from the battle");
+				Colorize(YELLOW, "$100 are spent to restore your creatures");
 				for(int x = 0; x<numCreatures; x++)
 				{
 					creatures[x]->Restore();
@@ -502,7 +523,8 @@ bool Player::battle(bool boss)
 
 		while(turnEnd == false)
 		{
-			cout << "\n(1) Attack, (2) Capture, (3) Switch Active Creature, (4) Use Item, (5) Escape" << endl;
+		    wait(1);
+			Colorize(BOLDYELLOW, "\n(1) Attack, (2) Capture, (3) Switch Active Creature, (4) Use Item, (5) Escape");
 			//cin >> decision;
 			decision = getChoice(1,2,3,4,5);
 
@@ -538,11 +560,11 @@ bool Player::battle(bool boss)
 			}
 			else if (decision == 2)
 			{
-			    cout<<"You attempt to capture "<<opp->getName()<<endl;
+				cout<<"You attempt to capture "<<opp->getName()<<endl;
 				bool success = catchCreature(opp);
 				if(success==true)
 				{
-				    cout<<"Capture Successful"<<endl;
+					cout<<"Capture Successful"<<endl;
 					opp->Restore();
 					return true;
 				}
@@ -600,18 +622,18 @@ bool Player::battle(bool boss)
 int Player::buyItem(int x)
 {
 	int quantity = 0;
-	cout<<"How many would you like to purchase?"<<endl;
+	Colorize(BOLDYELLOW, "How many would you like to purchase?");
 	//cin>>quantity;
 	quantity = getChoice();
 
 	if(quantity<0)
 	{
-		cout<<"You can not purchase a negative quantity"<<endl;
+		Colorize(BOLDRED, "You can not purchase a negative quantity");
 		return 0;
 	}
 	else if(currency < x*quantity)
 	{
-		cout<<"You do not have enough currency to complete this purchase."<<endl;
+		Colorize(BOLDRED, "You do not have enough currency to complete this purchase.");
 		quantity = 0;
 	}
 	else
@@ -631,7 +653,7 @@ void Player::sellItem(int x)
 	case 1:
 		if(healingItems <= 0)
 			throw quantity;
-		cout<<"How many would you like to sell?"<<endl;
+		Colorize(BOLDYELLOW, "How many would you like to sell?");
 		quantity = getChoice();
 		if(healingItems < quantity || quantity < 0)
 			throw quantity;
@@ -641,7 +663,7 @@ void Player::sellItem(int x)
 	case 2:
 		if(attackBuffItems <= 0)
 			throw quantity;
-		cout<<"How many would you like to sell?"<<endl;
+		Colorize(BOLDYELLOW, "How many would you like to sell?");
 		quantity = getChoice();
 		if(attackBuffItems < quantity || quantity < 0)
 			throw quantity;
@@ -651,7 +673,7 @@ void Player::sellItem(int x)
 	case 3:
 		if(defenseBuffItems <= 0)
 			throw quantity;
-		cout<<"How many would you like to sell?"<<endl;
+		Colorize(BOLDYELLOW, "How many would you like to sell?");
 		quantity = getChoice();
 		if(defenseBuffItems < quantity || quantity < 0)
 			throw quantity;
@@ -670,16 +692,16 @@ void Player::shop()
 
 	while(stayInShop == true)
 	{
-		cout<<"You currently have $"<<currency<<endl;
-		cout<<"Would you like to buy or sell items?"<<endl
-		    <<"(1) Buy"<<endl<<"(2) Sell"<<endl;
+		cout<<BOLDCYAN<<"You currently have $"<<currency<<DEFAULT<<endl;
+		Colorize(BOLDYELLOW, "Would you like to buy or sell items?");
+		cout<<"(1) Buy"<<endl<<"(2) Sell"<<endl;
 		//cin>>inp;
 		inp = getChoice(1,2);
 
 		if (inp==1)
 		{
-			cout<<"Which type of item would you like to purchase?"<<endl
-			    <<"(1) Healing Item - $500"<<endl<<"(2) Attack Booster - $150"
+			Colorize(BOLDYELLOW, "Which type of item would you like to purchase?");
+			   cout <<"(1) Healing Item - $500"<<endl<<"(2) Attack Booster - $150"
 			    <<endl<<"(3) Defense Booster - $150"<<endl<<"(4) Cancel"<<endl;
 			//cin>>inp;
 			inp = getChoice(1,2,3,4);

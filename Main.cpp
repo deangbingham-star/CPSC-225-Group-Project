@@ -21,11 +21,11 @@ int main()
 	bool quit = false;
 	Player* p;
 
-	Colorize(YELLOW, "Welcome");
+	Colorize(BOLDMAGENTA, "Welcome");
 	wait(1);
 
-	cout<<"Would you like to import data?"<<endl
-	    <<"(1) Yes"<<endl<<"(2) No"<<endl;
+	Colorize(BOLDYELLOW, "Would you like to import data?");
+	cout<<"(1) Yes"<<endl<<"(2) No"<<endl;
 
 	decision = getChoice(1,2);
 	if(decision==1)
@@ -33,14 +33,15 @@ int main()
 		ifstream fin("PlayerData.txt");
 		if(fin.is_open())
 		{
-			cout<<"PlayerData.txt successfully opened"<<endl;
+			Colorize(BOLDGREEN, "PlayerData.txt successfully opened");
 			p = new Player(fin);
 		}
 		else
 		{
 			Colorize(BOLDRED, "Could not find PlayerData.txt");
-            
-			cout<<"\nCreating a new player profile"<<endl;
+			wait(1);
+
+			Colorize(BOLDYELLOW,"\nCreating a new player profile");
 			wait(1);
 			p = new Player("Karl");
 		}
@@ -48,7 +49,7 @@ int main()
 	}
 	else
 	{
-		cout<<"Creating a new player profile"<<endl;
+		Colorize(BOLDYELLOW,"\nCreating a new player profile");
 		wait(1);
 		p = new Player("Karl");
 	}
@@ -56,42 +57,49 @@ int main()
 	//Main gameplay loop
 	while(bossCleared == false && quit==false)
 	{
-		cout<<"What would you like to do?"<<endl
-		    <<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss\n(5) Quit"
+		Colorize(BOLDYELLOW, "\nWhat would you like to do?");
+		cout<<"(1) View Status\n(2) Battle\n(3) Visit Shop\n(4) Challenge Boss\n(5) Quit"
 		    <<endl;
 		decision = getChoice(1,2,3,4,5);
 		if(decision==1)
 		{
-		    //allows user to view current status and restore creature status
+			//allows user to view current status and restore creature status
 			p->viewStatus();
+			wait(1);
 		}
 		else if(decision==2)
 		{
 			bool b = p->battle();
+			wait(1);
 		}
 		else if(decision==3)
 		{
 			p->shop();
+			wait(1);
 		}
 		else if(decision==4)
 		{
 			bossCleared = p->battle(true);
+			wait(1);
 		}
 		else if(decision==5)
-		    quit = true;
+			quit = true;
+		wait(1);
 	}
-	
+
 	if(bossCleared==true)
 	{
-	    cout<<"Congratulations! You successfully cleared the boss battle!"<<endl;
+		Colorize(BOLDGREEN, "Congratulations! You successfully cleared the boss battle!");
 	}
+
+	Colorize(BOLDYELLOW, "Would you like to save player data before leaving?");
+	Colorize(RED, "Any existing data in PlayerData.txt will be overwritten");
+	cout<<"(1) Yes\n(2) No"<<endl;
 	
-	cout<<"Would you like to save player data before leaving?"<<endl
-	    <<"Any existing data in PlayerData.txt will be overwritten"<<endl<<"(1) Yes\n(2) No"<<endl;
 	decision=getChoice(1,2);
 	if(decision==1)
-    	p->savePlayerData();
-	
+		p->savePlayerData();
+
 	delete p;
 	return 0;
 }
