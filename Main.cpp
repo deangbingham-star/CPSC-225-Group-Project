@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include "Creature.h"
+#include "Color.h"
 #include "Player.h"
 #include "CustomUtilities.h"
 using std::string;
@@ -21,7 +22,7 @@ int main()
 	bool quit = false;
 	Player* p;
 
-	cout<<"Welcome!"<<endl;
+	Colorize(YELLOW, "Welcome");
 	wait(1);
 
 	cout<<"Would you like to import data?"<<endl
