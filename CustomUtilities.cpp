@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include "Color.h"
 #include "CustomUtilities.h"
 using namespace std;
 
@@ -30,7 +31,7 @@ int getChoice()
 	{
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
-		cout<<"invalid input, please try again"<<endl;
+		Colorize(BOLDRED, "invalid input, please try again");
 		cin>>x;
 	}
 	cin.clear();
@@ -45,7 +46,7 @@ int getChoice(int a, int b)
 	{
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
-		cout<<"invalid input, please try again"<<endl;
+		Colorize(BOLDRED, "invalid input, please try again");
 		cin>>x;
 	}
 	return x;
@@ -59,7 +60,7 @@ int getChoice(int a, int b, int c)
 	{
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
-		cout<<"invalid input, please try again"<<endl;
+		Colorize(BOLDRED, "invalid input, please try again");
 		cin>>x;
 	}
 	return x;
@@ -73,7 +74,7 @@ int getChoice(int a, int b, int c, int d)
 	{
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
-		cout<<"invalid input, please try again"<<endl;
+		Colorize(BOLDRED, "invalid input, please try again");
 		cin>>x;
 	}
 	return x;
@@ -87,7 +88,7 @@ int getChoice(int a, int b, int c, int d, int e)
 	{
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
-		cout<<"invalid input, please try again"<<endl;
+		Colorize(BOLDRED, "invalid input, please try again");
 		cin>>x;
 	}
 	return x;
