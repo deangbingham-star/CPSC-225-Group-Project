@@ -38,6 +38,9 @@ Player::Player(ifstream& fin)
 	fin>>numCreatures;
 	cout<<numCreatures<<endl;
 
+    if(numCreatures>3 || numCreatures<1)
+        throw error;
+
 	for(int x = 0; x<numCreatures; x++)
 	{
         string CreatureType;
